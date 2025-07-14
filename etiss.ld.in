@@ -32,53 +32,54 @@ SECTIONS
   /* ================ ROM ================ */
 
   .text : {
+    KEEP(*(.text._start))
     *(.text .text.* )
-  }  > ROM
+  }  > RAM
 
-  .rodata : {
+  .rodata : ALIGN(4) {
     *(.rodata .rodata.*)
-  } > ROM
-  .srodata : {
+  } > RAM
+  .srodata : ALIGN(4) {
     *(.srodata .srodata.*)
-  } > ROM
+  } > RAM
 
 
 
   /* ================ RAM ================ */
 
-  .init_array : {
+  .init_array : ALIGN(4) {
     PROVIDE_HIDDEN (__init_array_start = .);
     KEEP (*(.init_array .init_array.*))
     PROVIDE_HIDDEN (__init_array_end = .);
   } > RAM
-  .fini_array : {
+  .fini_array : ALIGN(4) {
     PROVIDE_HIDDEN (__fini_array_start = .);
     KEEP (*(.fini_array .fini_array.*))
     PROVIDE_HIDDEN (__fini_array_end = .);
   } > RAM
 
-  .gcc_except_table : {
+  .gcc_except_table : ALIGN(4) {
     *(.gcc_except_table .gcc_except_table.*)
   } > RAM
 
-  .eh_frame : {
+  .eh_frame : ALIGN(4) {
     KEEP (*(.eh_frame))
   } > RAM
 
   __data_start = .;
-  .data : {
+  .data : ALIGN(4) {
       *(.data .data.*)
   } > RAM
   __sdata_start = .;
-  .sdata : {
+  .sdata : ALIGN(4) {
       *(.sdata .sdata.*)
   } > RAM
 
   __bss_start = .;
-  .sbss : {
+  .sbss : ALIGN(4) {
       *(.sbss .sbss.*)
   } > RAM
-  .bss : {
+  .bss : ALIGN(4) {
       *(.bss .bss.*)
   } > RAM
   _end = .;
@@ -90,7 +91,7 @@ SECTIONS
 
   /* stack pointer starts at the top of the ram */
   __stack = ORIGIN(RAM) + LENGTH(RAM);
-  .stack : {
+  .stack : ALIGN(4) {
     ASSERT ((__stack > (_end + __heap_size + __stack_size)), "Error: RAM too small for heap and stack");
   }
 }
