@@ -148,88 +148,88 @@ checksum:
     mv a0, s3
     ret
 
-.globl strcpy
-strcpy:
+# .globl strcpy
+# strcpy:
     
-    mv a2, a0
-    andi t0, a2, 3
-    beqz t0, .aligned
+#     mv a2, a0
+#     andi t0, a2, 3
+#     beqz t0, .aligned
     
-    .align_loop:
-        lb t0, 0(a1)
-        addi a1, a1, 1
-        sb t0, 0(a2)
-        addi a2, a2, 1
-        beqz a1, .return
-        andi t0, a1, 3
-        bnez t0, .align_loop
+#     .align_loop:
+#         lb t0, 0(a1)
+#         addi a1, a1, 1
+#         sb t0, 0(a2)
+#         addi a2, a2, 1
+#         beqz a1, .return
+#         andi t0, a1, 3
+#         bnez t0, .align_loop
         
-    .aligned:
-    li t2, -1
-    .loop:
-        lw t0, 0(a1)
-        orc.b t1, t0
-        bne t1, t2, .final
-        sw t0, 0(a2)
-        addi a1, a1, 4
-        addi a2, a2, 4
-        j .loop
+#     .aligned:
+#     li t2, -1
+#     .loop:
+#         lw t0, 0(a1)
+#         orc.b t1, t0
+#         bne t1, t2, .final
+#         sw t0, 0(a2)
+#         addi a1, a1, 4
+#         addi a2, a2, 4
+#         j .loop
         
     
-    .final:
-        lb t0, 0(a1)
-        addi a1, a1, 1
-        sb t0, 0(a2)
-        addi a2, a2, 1
-        bnez t0, .final
+#     .final:
+#         lb t0, 0(a1)
+#         addi a1, a1, 1
+#         sb t0, 0(a2)
+#         addi a2, a2, 1
+#         bnez t0, .final
 
-    .return:
-    ret
+#     .return:
+#     ret
 
-.globl strcmp
-strcmp:
+# .globl strcmp
+# strcmp:
     
-    li a4, -1
-    .align 4
-    .loop_strcmp:
-        lw a2, 0(a0)
-        lw a3, 0(a1)
-        bne a2, a3, .final_strcmp
-        orc.b a2, a2
-        bne a2, a4, .final_strcmp
+#     li a4, -1
+#     .align 4
+#     .loop_strcmp:
+#         lw a2, 0(a0)
+#         lw a3, 0(a1)
+#         bne a2, a3, .final_strcmp
+#         orc.b a2, a2
+#         bne a2, a4, .final_strcmp
 
-        lw a2, 4(a0)
-        lw a3, 4(a1)
-        bne a2, a3, .final_strcmp
-        orc.b a2, a2
-        bne a2, a4, .final_strcmp
+#         lw a2, 4(a0)
+#         lw a3, 4(a1)
+#         bne a2, a3, .final_strcmp
+#         orc.b a2, a2
+#         bne a2, a4, .final_strcmp
 
-        addi a0, a0, 8
-        addi a1, a1, 8
-        j .loop_strcmp
+#         addi a0, a0, 8
+#         addi a1, a1, 8
+#         j .loop_strcmp
     
-    .final_strcmp:
-        lb a2, 0(a0)
-        lb a3, 0(a1)
-        bne a2, a3, .return_strcmp
-        beqz a2, .return_strcmp
+#     .final_strcmp:
+#         lb a2, 0(a0)
+#         lb a3, 0(a1)
+#         bne a2, a3, .return_strcmp
+#         beqz a2, .return_strcmp
 
-        lb a2, 1(a0)
-        lb a3, 1(a1)
-        bne a2, a3, .return_strcmp
-        beqz a2, .return_strcmp
+#         lb a2, 1(a0)
+#         lb a3, 1(a1)
+#         bne a2, a3, .return_strcmp
+#         beqz a2, .return_strcmp
 
-        lb a2, 2(a0)
-        lb a3, 2(a1)
-        bne a2, a3, .return_strcmp
-        beqz a2, .return_strcmp
+#         lb a2, 2(a0)
+#         lb a3, 2(a1)
+#         bne a2, a3, .return_strcmp
+#         beqz a2, .return_strcmp
 
-        lb a2, 3(a0)
-        lb a3, 3(a1)
+#         lb a2, 3(a0)
+#         lb a3, 3(a1)
         
-    .return_strcmp:
-    sub a0, a2, a3
-    ret
+#     .return_strcmp:
+#     sub a0, a2, a3
+#     ret
 
 .globl printdecu
 printdecu:
