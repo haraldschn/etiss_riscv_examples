@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(RISCV_ARCH "rv32ima_zicsr" CACHE STRING "RISC-V architecture (-march)")
+set(RISCV_ARCH "rv32ima_zicsr_zifencei" CACHE STRING "RISC-V architecture (-march)")
 set(RISCV_ABI "ilp32" CACHE STRING "RISC-V ABI (-mabi)")
 
 set(RISCV_TOOLCHAIN_PREFIX "" CACHE STRING "optional prefix for the riscv toolchain in case it is not on the path")
