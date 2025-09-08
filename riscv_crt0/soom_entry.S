@@ -26,7 +26,17 @@ _start:
     #call checksum
     #call printhex
     
-    li sp, 0x80020000
+    la sp, _init_stack_top
+
+    # Clear the bss segment
+    # memset(void* str, int c, size_t n);
+    # memset(__bss_start, 0, __bss_start - _end);
+    la      a0, __bss_start
+    li      a1, 0
+    la      a2, _end
+    sub     a2, a2, a0
+    call    memset
+
     call main
     
     # print IPC

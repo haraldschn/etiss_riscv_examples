@@ -89,9 +89,12 @@ SECTIONS
   /* point the global pointer so it can access sdata, sbss, data and bss */
   __global_pointer$ = MIN(__sdata_start + 0x800, MAX(__data_start + 0x800, _end - 0x800));
 
-  /* stack pointer starts at the top of the ram */
-  __stack = ORIGIN(RAM) + LENGTH(RAM);
-  .stack : ALIGN(4) {
-    ASSERT ((__stack > (_end + __heap_size + __stack_size)), "Error: RAM too small for heap and stack");
-  }
+  # Stack region
+  . = ALIGN(16);
+  PROVIDE(_init_stack_top = . + 0x1000);
+
+  # Heap region
+  PROVIDE(_kernel_heap_bottom = _init_stack_top);
+  PROVIDE(_kernel_heap_top = ORIGIN(RAM) + LENGTH(RAM));
+  PROVIDE(_kernel_heap_size = _kernel_heap_top - _kernel_heap_bottom);
 }
