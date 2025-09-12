@@ -12,9 +12,22 @@
 // This file was modified by the Chair of Electronic Design Automation, TUM
 */
 
+SECTIONS
+{
+  /* Place tohost and fromhost into a dedicated .tohost section */
+  .tohost 0x11100000 : {
+    KEEP(*(.tohost))
+    LONG(0)         /* reserve 4 bytes for tohost */
+  }
+
+  .fromhost 0x11101040 : {
+    KEEP(*(.fromhost))
+    LONG(0)         /* reserve 4 bytes for fromhost */
+  }
+}
+
 ENTRY(_start)
 SEARCH_DIR(.)
-
 
 MEMORY
 {

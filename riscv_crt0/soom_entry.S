@@ -1,4 +1,15 @@
 .set IO_ADDR, 0x10000000
+
+    .section .tohost
+    .globl tohost
+tohost:
+    .word 0
+
+    .section .fromhost
+    .globl fromhost
+fromhost:
+    .word 0
+
 .section .rodata
 .str_boot_msg: .string "SoomRV booting\n"
 .str_except_msg: .string "Unhandled Exception "
