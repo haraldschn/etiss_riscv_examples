@@ -5,22 +5,22 @@ add_custom_target(embench)
 macro(add_embench_program PROGRAM)
 	set(SRC_FILES "${ARGN}")
 
-  add_executable_etiss(embench_${PROGRAM})
-  target_include_directories(embench_${PROGRAM} PRIVATE
+  add_executable_etiss(${PROGRAM})
+  target_include_directories(${PROGRAM} PRIVATE
     ${EMBENCH_DIR}/support
   )
   file(GLOB BENCH_FILES ${EMBENCH_DIR}/src/${PROGRAM}/*.c )
 
-  target_sources(embench_${PROGRAM} PRIVATE
+  target_sources(${PROGRAM} PRIVATE
     ${BENCH_FILES}
     ${EMBENCH_DIR}/support/main.c
     ${EMBENCH_DIR}/support/beebsc.c
     ${EMBENCH_DIR}/config/native/boards/default/boardsupport.c
   )
 
-  target_link_libraries(embench_${PROGRAM} PRIVATE m)
-  target_compile_definitions(embench_${PROGRAM} PRIVATE CPU_MHZ=1 WARMUP_HEAT=1)
-  add_dependencies(embench embench_${PROGRAM})
+  target_link_libraries(${PROGRAM} PRIVATE m)
+  target_compile_definitions(${PROGRAM} PRIVATE CPU_MHZ=1 WARMUP_HEAT=1)
+  add_dependencies(embench ${PROGRAM})
 endmacro()
 
 if(EXISTS ${EMBENCH_DIR}/src)

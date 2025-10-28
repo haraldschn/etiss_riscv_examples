@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 
-set(RISCV_ARCH "rv32gc" CACHE STRING "RISC-V architecture (-march)")
-set(RISCV_ABI "ilp32d" CACHE STRING "RISC-V ABI (-mabi)")
+set(RISCV_ARCH "rv32ima_zicsr_zifencei" CACHE STRING "RISC-V architecture (-march)")
+set(RISCV_ABI "ilp32" CACHE STRING "RISC-V ABI (-mabi)")
 
 set(RISCV_TOOLCHAIN_PREFIX "" CACHE STRING "optional prefix for the riscv toolchain in case it is not on the path")
 set(RISCV_TOOLCHAIN_BASENAME "riscv64-unknown-elf" CACHE STRING "base name of the toolchain executables")

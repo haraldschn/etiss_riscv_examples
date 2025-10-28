@@ -18,7 +18,7 @@ Starting in `<etiss examples>`, run the following commands:
 	mkdir build
 	cd build
 	cmake -DCMAKE_TOOLCHAIN_FILE=rv32gc-toolchain.cmake -DRISCV_TOOLCHAIN_PREFIX=<toolchain prefix> -DCMAKE_INSTALL_PREFIX=../install ..
-	make install
+	make all
 
 `rv32gc-toolchain.cmake` can be substituted by `rv64gc-toolchain.cmake` if desired.
 

@@ -10,11 +10,12 @@ etiss.load_integrated_libraries=true
 jit.debug=false
 etiss.enable_dmi=false
 etiss.log_pc=false
+etiss.exit_on_loop=true
 
 [IntConfigurations]
 arch.or1k.if_stall_cycles=0
 etiss.max_block_size=100
-arch.cpu_cycle_time_ps=31250
+arch.cpu_cycle_time_ps=10000
 ETISS::CPU_quantum_ps=100000
 ETISS::write_pc_trace_from_time_us=0
 ETISS::write_pc_trace_until_time_us=3000000
@@ -34,5 +35,9 @@ simple_mem_system.memseg_length_00=@MEM_ROM_LENGTH@
 simple_mem_system.memseg_origin_01=@MEM_RAM_ORIGIN@
 simple_mem_system.memseg_length_01=@MEM_RAM_LENGTH@
 
+[Plugin Logger]
+plugin.logger.logaddr=0x10000000
+plugin.logger.logmask=0xF0000000
+
 [StringConfigurations]
-vp.elf_file=@ELF_PATH@
+vp.elf_file=@CMAKE_INSTALL_PREFIX@/bin/@BIN_NAME@

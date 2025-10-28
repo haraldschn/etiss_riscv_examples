@@ -12,9 +12,22 @@
 // This file was modified by the Chair of Electronic Design Automation, TUM
 */
 
+SECTIONS
+{
+  /* Place tohost and fromhost into a dedicated .tohost section */
+  .tohost 0x11100000 : {
+    KEEP(*(.tohost))
+    LONG(0)         /* reserve 4 bytes for tohost */
+  }
+
+  .fromhost 0x11101040 : {
+    KEEP(*(.fromhost))
+    LONG(0)         /* reserve 4 bytes for fromhost */
+  }
+}
+
 ENTRY(_start)
 SEARCH_DIR(.)
-
 
 MEMORY
 {
@@ -32,53 +45,54 @@ SECTIONS
   /* ================ ROM ================ */
 
   .text : {
+    KEEP(*(.text._start))
     *(.text .text.* )
-  }  > ROM
+  }  > RAM
 
-  .rodata : {
+  .rodata : ALIGN(4) {
     *(.rodata .rodata.*)
-  } > ROM
-  .srodata : {
+  } > RAM
+  .srodata : ALIGN(4) {
     *(.srodata .srodata.*)
-  } > ROM
+  } > RAM
 
 
 
   /* ================ RAM ================ */
 
-  .init_array : {
+  .init_array : ALIGN(4) {
     PROVIDE_HIDDEN (__init_array_start = .);
     KEEP (*(.init_array .init_array.*))
     PROVIDE_HIDDEN (__init_array_end = .);
   } > RAM
-  .fini_array : {
+  .fini_array : ALIGN(4) {
     PROVIDE_HIDDEN (__fini_array_start = .);
     KEEP (*(.fini_array .fini_array.*))
     PROVIDE_HIDDEN (__fini_array_end = .);
   } > RAM
 
-  .gcc_except_table : {
+  .gcc_except_table : ALIGN(4) {
     *(.gcc_except_table .gcc_except_table.*)
   } > RAM
 
-  .eh_frame : {
+  .eh_frame : ALIGN(4) {
     KEEP (*(.eh_frame))
   } > RAM
 
   __data_start = .;
-  .data : {
+  .data : ALIGN(4) {
       *(.data .data.*)
   } > RAM
   __sdata_start = .;
-  .sdata : {
+  .sdata : ALIGN(4) {
       *(.sdata .sdata.*)
   } > RAM
 
   __bss_start = .;
-  .sbss : {
+  .sbss : ALIGN(4) {
       *(.sbss .sbss.*)
   } > RAM
-  .bss : {
+  .bss : ALIGN(4) {
       *(.bss .bss.*)
   } > RAM
   _end = .;
@@ -88,9 +102,12 @@ SECTIONS
   /* point the global pointer so it can access sdata, sbss, data and bss */
   __global_pointer$ = MIN(__sdata_start + 0x800, MAX(__data_start + 0x800, _end - 0x800));
 
-  /* stack pointer starts at the top of the ram */
-  __stack = ORIGIN(RAM) + LENGTH(RAM);
-  .stack : {
-    ASSERT ((__stack > (_end + __heap_size + __stack_size)), "Error: RAM too small for heap and stack");
-  }
+  # Stack region
+  . = ALIGN(16);
+  PROVIDE(_init_stack_top = . + 0x1000);
+
+  # Heap region
+  PROVIDE(_kernel_heap_bottom = _init_stack_top);
+  PROVIDE(_kernel_heap_top = ORIGIN(RAM) + LENGTH(RAM));
+  PROVIDE(_kernel_heap_size = _kernel_heap_top - _kernel_heap_bottom);
 }
